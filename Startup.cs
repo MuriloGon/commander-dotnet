@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Serialization;
 
 namespace Commander
 {
@@ -28,6 +29,10 @@ namespace Commander
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddControllers().AddNewtonsoftJson(s => {
+        s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+      });
+
       services.AddDbContext<CommanderContext>(opts => {
         var connection = Configuration["ConnectionStrings:Default"];
         opts.UseMySQL(connection);

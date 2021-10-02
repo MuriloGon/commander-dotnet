@@ -16,7 +16,7 @@ namespace Commander.Controllers
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Command>> getAll() => Ok(this._Repository.GetAppsCommands());
+    public ActionResult<IEnumerable<Command>> getAll() => Ok(this._Repository.GetAllCommands());
 
     [HttpGet("{id}")]
     public ActionResult<Command> getById(int id) {

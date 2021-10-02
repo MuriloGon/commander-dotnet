@@ -62,7 +62,7 @@ namespace Commander.Controllers
     {
       var cmdFromRepo = _Repository.GetCommandById(id);
 
-      if(cmdFromRepo == null) return NotFound();
+      if (cmdFromRepo == null) return NotFound();
 
       _mapper.Map(cmdUpdte, cmdFromRepo);
 
@@ -73,17 +73,30 @@ namespace Commander.Controllers
     }
 
     [HttpPatch("{id}")]
-    public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc) {
+    public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
+    {
       var cmdFromRepo = _Repository.GetCommandById(id);
-      if(cmdFromRepo == null) return NotFound();
+      if (cmdFromRepo == null) return NotFound();
 
       var commandToPatch = _mapper.Map<CommandUpdateDto>(cmdFromRepo);
       patchDoc.ApplyTo(commandToPatch, ModelState);
 
-      if(!TryValidateModel(commandToPatch)) return ValidationProblem(ModelState);
+      if (!TryValidateModel(commandToPatch)) return ValidationProblem(ModelState);
       _mapper.Map(commandToPatch, cmdFromRepo);
 
       _Repository.UpdateCommand(cmdFromRepo);
+      _Repository.saveChanges();
+
+      return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public ActionResult DeleteCommand(int id)
+    {
+      var cmdFromRepo = _Repository.GetCommandById(id);
+      if (cmdFromRepo == null) return NotFound();
+
+      _Repository.DeleteCommand(cmdFromRepo);
       _Repository.saveChanges();
 
       return NoContent();

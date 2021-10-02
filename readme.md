@@ -13,6 +13,11 @@ The project is a commander reminder. The user is capable to save a `howTo` (desc
 * Entity Framework
 * MySql Entity Framework connection
 
+## Prerequisites
+
+* .Net Core
+* MySql server (see `appsettings.json -> ConnectionStrings:Default`)
+
 ## Run Locally
 
 ```bash
